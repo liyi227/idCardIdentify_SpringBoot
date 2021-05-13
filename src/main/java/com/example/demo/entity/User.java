@@ -1,43 +1,55 @@
 package com.example.demo.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
-import java.util.Base64;
-import java.util.Date;
-
 /**
  * @author ly
  * @since 2021/5/8
  */
+
 public class User {
-    private Integer id;
-    private String username;
+    private int id;
+    private String name;
     private String password;
 
-    @JSONField(format="yyyy-MM-dd")
-    private Date date;
-    public Integer getId() {
+    public  User(){
+
+    }
+
+    public User(int id, String name, String password) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+    }
+
+    public int getId() {
         return id;
     }
-    public Date getDate() {
-        return date;
-    }
-    public void setDate(Date date) {
-        this.date = date;
-    }
-    public void setId(Integer id) {
+
+    public void setId(int id) {
         this.id = id;
     }
-    public String getUsername() {
-        return username;
+
+    public String getName() {
+        return name;
     }
-    public void setUsername(String username) {
-        this.username = username;
+
+    public void setName(String name) {
+        this.name = name;
     }
+
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }

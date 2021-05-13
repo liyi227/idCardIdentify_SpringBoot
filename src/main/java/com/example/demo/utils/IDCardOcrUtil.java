@@ -26,7 +26,6 @@ public class IDCardOcrUtil {
         instance.setDatapath(path); //path为tessdata文件夹目录位置
         instance.setLanguage("chi_sim");    //中英文混合识别需用 + 分隔，chi_sim：简体中文，eng：英文
         instance.setTessVariable("user_defined_dpi", "300");    //Warning: Invalid resolution 0 dpi. Using 70 instead.
-        String result = null;
 
         System.out.println("识别结果如下：");
         try {
@@ -41,7 +40,6 @@ public class IDCardOcrUtil {
             String idNumber = "";
             instance.setLanguage("eng");    //中英文混合识别需用 + 分隔，chi_sim：简体中文，eng：英文
             idNumber = instance.doOCR(lstBufferedImg.get(lstBufferedImg.size() - 1)).replaceAll("[^0-9xX]", "");
-
 
             //根据身份证号获取性别
             char sex;
@@ -82,8 +80,10 @@ public class IDCardOcrUtil {
             System.out.println("身份证号：" + idNumber);
             lstIdCardInfo.add(idNumber);
 
-            long endTime = System.currentTimeMillis();    //识别结束的时间
-//            System.out.println("识别用时：" + (endTime - startTime) + "ms");    //识别图片耗时
+//            if (!IdCardValidatorUtil.isValidatedAllIdcard(idNumber)) {
+//                lstIdCardInfo.add("Error");
+////                return null;
+//            }
         } catch (TesseractException e) {
             System.out.println(e.getMessage());
         }

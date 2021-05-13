@@ -387,10 +387,9 @@ public class ImageOpencvUtil {
         List<RotatedRect> rects = findTextRegion(corrodedImg);
         //倾斜校正
         Mat correctedImg = correction(rects, src);
-        //todo 可优化添加后两行代码，并返回zoomedImg
-        //倾斜校正后裁剪
+        //裁剪
         Mat cuttedImg = cutRect(correctedImg);
-        //裁剪后标准化
+        //标准化
         Mat zoomedImg = zoom(cuttedImg);
 
         return zoomedImg;
@@ -445,9 +444,7 @@ public class ImageOpencvUtil {
         }
 
         MatOfPoint2f matOfPoint2f = new MatOfPoint2f(contours.get(index).toArray());
-
         RotatedRect rect = Imgproc.minAreaRect(matOfPoint2f);
-
         return rect;
     }
 
@@ -490,14 +487,14 @@ public class ImageOpencvUtil {
             height = correctMat.height() - startUp;
         }
 
-        Mat temp = new Mat(correctMat, new Rect(startLeft, startUp, width, height));
+        Mat cuttedMat = new Mat(correctMat, new Rect(startLeft, startUp, width, height));
 //        try {
 //            temp = new Mat(correctMat, new Rect(startLeft, startUp, width, height));
 //        } catch (Exception e) {
 //            System.out.println(e);
 //        }
 
-        return temp;
+        return cuttedMat;
     }
 
     /**
@@ -676,7 +673,6 @@ public class ImageOpencvUtil {
                 }
             }
         }
-
 
         System.out.println("中心坐标x：");
         for (int i = 0; i < rects.size(); i++) {

@@ -20,24 +20,15 @@ public class ImageProcessUtil {
 
         List<BufferedImage> lstBufferedImg = new ArrayList<>();
 
-//        long startTime = System.currentTimeMillis();    //识别之前的时间
-
         // 加载动态库
         URL url = ClassLoader.getSystemResource("lib/opencv/opencv_java452.dll");
         System.load(url.getPath());
-
-        //原图路径
-//        String sourceImage = "E:\\Desktop\\OCRTest\\image\\01.png";
-        //处理后的图片保存路径
-//        String processedImage = sourceImage.substring(0, sourceImage.lastIndexOf(".")) + "after.png";
 
         //将bufferedImage转换为Mat矩阵图像
         Mat image = ImageConvertUtil.BufImg2Mat(bufferedImage);
 
         //倾斜校正并标准化
         Mat correctedImg = ImageOpencvUtil.imgCorrection(image);
-
-        Mat img = correctedImg.clone();
 
         //将倾斜校正标准化后的Mat矩阵图像转换为BufferedImage格式
         BufferedImage newBufferedImage = ImageConvertUtil.Mat2BufImg(correctedImg, ".png");
@@ -82,6 +73,7 @@ public class ImageProcessUtil {
 //                Imgproc.line(img, rectPoint[j], rectPoint[(j + 1) % 4], new Scalar(0, 0, 255), 2);
 //            }
 //        }
+
 //        //显示带轮廓的图像
 //        imshow("Contour Image", img);
 
