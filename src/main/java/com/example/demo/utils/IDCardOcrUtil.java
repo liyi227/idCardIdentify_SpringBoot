@@ -55,7 +55,7 @@ public class IDCardOcrUtil {
             String nation = "";
             instance.setLanguage("chi_sim");
             nation = instance.doOCR(lstBufferedImg.get(2)).trim();
-            if (nation.equals("汊"))
+            if (nation.equals("汊")||(nation.equals("池"))||nation.contains("汉"))
                 nation = "汉";
             System.out.println("名族：" + nation);
             lstIdCardInfo.add(nation);
@@ -76,17 +76,12 @@ public class IDCardOcrUtil {
                 address += instance.doOCR(lstBufferedImg.get(i)).trim();
             }
             address = address.replaceAll("[^\\s\\u4e00-\\u9fa5\\-0-9]+", "").replaceAll(" +", "").trim();
-            address = "";
             System.out.println("地址：" + address);
             lstIdCardInfo.add(address);
 
             System.out.println("身份证号：" + idNumber);
             lstIdCardInfo.add(idNumber);
 
-//            if (!IdCardValidatorUtil.isValidatedAllIdcard(idNumber)) {
-//                lstIdCardInfo.add("Error");
-////                return null;
-//            }
         } catch (TesseractException e) {
             System.out.println(e.getMessage());
         }

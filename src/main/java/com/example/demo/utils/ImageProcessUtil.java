@@ -65,18 +65,17 @@ public class ImageProcessUtil {
 
         //查找和筛选文字区域
         List<RotatedRect> rects = ImageOpencvUtil.findTextRegionRect(dilationImg);
-        if (rects.size() > 9)
+        if (rects.size() > 10)
             System.out.println("身份证信息文本框获取错误！！！");
 
         //用红线画出找到的轮廓
-        for (RotatedRect rotatedRect : rects) {
-            Point[] rectPoint = new Point[4];
-            rotatedRect.points(rectPoint);
-            for (int j = 0; j <= 3; j++) {
-                Imgproc.line(correctedImg, rectPoint[j], rectPoint[(j + 1) % 4], new Scalar(0, 0, 255), 2);
-            }
-        }
-
+//        for (RotatedRect rotatedRect : rects) {
+//            Point[] rectPoint = new Point[4];
+//            rotatedRect.points(rectPoint);
+//            for (int j = 0; j <= 3; j++) {
+//                Imgproc.line(correctedImg, rectPoint[j], rectPoint[(j + 1) % 4], new Scalar(0, 0, 255), 2);
+//            }
+//        }
         //显示带轮廓的图像
 //        imshow("Contour Image", correctedImg);
 

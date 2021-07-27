@@ -130,6 +130,8 @@ public class ImageOpencvUtil {
     public static Mat pyrMeanShiftFiltering(Mat src) {
         Mat dst = src.clone();
         //sp、sr值越大，函数执行时间越长
+//        Imgproc.pyrMeanShiftFiltering(src, dst, 20, 50);
+        //todo:修改sp数值
         Imgproc.pyrMeanShiftFiltering(src, dst, 20, 50);
         return dst;
     }
@@ -571,13 +573,15 @@ public class ImageOpencvUtil {
 //        src = ImgBinarization(src);
 
         //Canny边缘检测
+        //todo threshold1与threshold2影响结果
 //        Imgproc.Canny(src, dst, 20, 60, 3, false);
 //        Imgproc.Canny(src, dst, 100, 40, 3, false);
-        Imgproc.Canny(src, dst, 150, 40, 3, false);
+//        Imgproc.Canny(src, dst, 150, 40, 3, false);
+        Imgproc.Canny(src, dst, 20, 60, 3, false);
 //        Imgproc.Canny(src, dst, 10, 30, 3, false);
 
         //膨胀，连接边缘
-        Imgproc.dilate(dst, dst, new Mat(), new Point(-1, -1), 3, 1, new Scalar(1));
+        Imgproc.dilate(dst, dst, new Mat(), new Point(-1, -1), 1, 1, new Scalar(1));
         imshow("边缘轮廓检测", dst);
         return dst;
     }
@@ -705,7 +709,7 @@ public class ImageOpencvUtil {
 //        binaryImage = binaryzation(src);
 
         //3.腐蚀和膨胀操作核设定
-        Mat element1 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(26, 9));
+        Mat element1 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(24, 9));
         //设置高度大小可以控制上下行的膨胀程度，例如3比4的区分能力更强,但也会造成漏检
         Mat element2 = Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(26, 9));
 
@@ -771,8 +775,8 @@ public class ImageOpencvUtil {
 
             System.out.println("width = " + m_width);
 
-//            if (m_width < 80)
-//                continue;
+            if (m_height < 20)
+                continue;
 //            if (m_width < m_height * 1.2)
 //                continue;
 

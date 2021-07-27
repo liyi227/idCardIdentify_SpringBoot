@@ -37,7 +37,7 @@ public class testOCR {
         URL url = ClassLoader.getSystemResource("lib/opencv/opencv_java452.dll");
         System.load(url.getPath());
         //原图路径
-        String sourceImage = "E:\\Desktop\\OCRTest\\image\\06.png";
+        String sourceImage = "E:\\Desktop\\OCRTest\\image\\01.png";
         //处理后的图片保存路径
         String processedImage = sourceImage.substring(0, sourceImage.lastIndexOf(".")) + "after.png";
         //读取图像
@@ -85,7 +85,7 @@ public class testOCR {
 
         //查找和筛选文字区域
         List<RotatedRect> rects = ImageOpencvUtil.findTextRegionRect(dilationImg);
-        if (rects.size() > 9)
+        if (rects.size() > 10)
             System.out.println("身份证信息文本框获取错误！！！");
 
         //用红线画出找到的轮廓
@@ -148,7 +148,7 @@ public class testOCR {
             String nation = "";
             instance.setLanguage("chi_sim");
             nation = instance.doOCR(lstBufferedImg.get(2)).trim();
-            if (nation.equals("汊"))
+            if (nation.equals("汊")||(nation.equals("池"))||nation.contains("汉"))
                 nation = "汉";
             System.out.println("名族：" + nation);
 
