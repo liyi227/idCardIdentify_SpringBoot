@@ -14,10 +14,9 @@ import static org.opencv.imgcodecs.Imgcodecs.imwrite;
 
 /**
  * @author ly
- * @since 2021/4/26
+ * @since 2021/5/20
  */
-//测试Opencv的canny()边缘检测方法
-public class testOpencvCanny {
+public class testOpencvSobel {
     public static void main(String[] args) throws Exception {
         // 加载动态库
         URL url = ClassLoader.getSystemResource("lib/opencv/opencv_java452.dll");
@@ -26,7 +25,7 @@ public class testOpencvCanny {
         //原图路径
         String sourceImage = "E:\\Desktop\\OCRTest\\image\\14.png";
         //处理后的图片保存路径
-        String processedImage = sourceImage.substring(0, sourceImage.lastIndexOf(".")) + "afterCanny.png";
+        String processedImage = sourceImage.substring(0, sourceImage.lastIndexOf(".")) + "afterSobel.png";
 
         // 读取图像
         Mat image = imread(sourceImage);
@@ -51,11 +50,13 @@ public class testOpencvCanny {
         Mat correctedImg = ImageOpencvUtil.correction(rects, image);
         imshow("校正", correctedImg);
 
-        //轮廓
-        Mat cannyImg = ImageOpencvUtil.canny(correctedImg);
-        imshow("边缘检测", cannyImg);
+        Mat gray=ImageOpencvUtil.gray(correctedImg);
 
-        imwrite(processedImage, cannyImg);
+        //轮廓
+        Mat sobelImg = ImageOpencvUtil.sobel(gray);
+        imshow("边缘检测", sobelImg);
+
+        imwrite(processedImage, sobelImg);
         waitKey();
     }
 }

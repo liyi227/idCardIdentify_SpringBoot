@@ -54,7 +54,9 @@ public class IDCardOcrUtil {
             //识别名族
             String nation = "";
             instance.setLanguage("chi_sim");
-            nation = instance.doOCR(lstBufferedImg.get(1)).trim();
+            nation = instance.doOCR(lstBufferedImg.get(2)).trim();
+            if (nation.equals("汊"))
+                nation = "汉";
             System.out.println("名族：" + nation);
             lstIdCardInfo.add(nation);
 
@@ -70,10 +72,11 @@ public class IDCardOcrUtil {
             //识别地址
             String address = "";
             instance.setLanguage("chi_sim");    //中英文混合识别需用 + 分隔，chi_sim：简体中文，eng：英文
-            for (int i = 2; i < lstBufferedImg.size() - 1; i++) {
+            for (int i = lstBufferedImg.size() - 3; i < lstBufferedImg.size() - 1; i++) {
                 address += instance.doOCR(lstBufferedImg.get(i)).trim();
             }
             address = address.replaceAll("[^\\s\\u4e00-\\u9fa5\\-0-9]+", "").replaceAll(" +", "").trim();
+            address = "";
             System.out.println("地址：" + address);
             lstIdCardInfo.add(address);
 

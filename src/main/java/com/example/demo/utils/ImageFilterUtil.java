@@ -75,8 +75,8 @@ public class ImageFilterUtil {
     /**
      * 图片亮度调整
      *
-     * @param image
-     * @param brightness
+     * @param image 需调整亮度的图像
+     * @param brightness 需调整的亮度，参数为+、-分别表示调亮、调暗
      * @return
      */
     public static BufferedImage imageBrightness(BufferedImage image, int brightness) {
@@ -133,7 +133,6 @@ public class ImageFilterUtil {
         return avgBrightNess;
     }
 
-
     /**
      * 灰度化
      *
@@ -180,7 +179,7 @@ public class ImageFilterUtil {
         int height = image.getHeight();
         int minx = image.getMinX();
         int miny = image.getMinY();
-        //遍历图片的像素，为处理图片上的杂色，所以要把指定像素上的颜色换成目标白色 用二层循环遍历长和宽上的每个像素
+        // 遍历图片的像素，为处理图片上的杂色，所以要把指定像素上的颜色换成目标白色 用二层循环遍历长和宽上的每个像素
         int hitCount = 0;
         for (int i = minx; i < width; i++) {
             for (int j = miny; j < height; j++) {
@@ -193,11 +192,10 @@ public class ImageFilterUtil {
 
                 /**
                  *
-                 * 进行换色操作，我这里是要换成白底，那么就判断图片中rgb值是否在范围内的像素
-                 *
+                 * 进行换色操作，这里是要换成白底黑字，那么就判断图片中rgb值是否在范围内的像素
+                 * 经过不断尝试，RGB数值相互间相差15以内的都基本上是灰色，
+                 * 对以身份证来说特别是介于73到78之间，还有大于100的部分RGB值都是干扰色，将它们一次性转变成白色
                  */
-                // 经过不断尝试，RGB数值相互间相差15以内的都基本上是灰色，
-                // 对以身份证来说特别是介于73到78之间，还有大于100的部分RGB值都是干扰色，将它们一次性转变成白色
                 if (
                         (Math.abs(rgb[0] - rgb[1]) < 15)
                                 && (Math.abs(rgb[0] - rgb[2]) < 15)
@@ -267,5 +265,4 @@ public class ImageFilterUtil {
     public static BufferedImage zoom(BufferedImage image) {
         return ImageHelper.getScaledInstance(image, 673, 425);
     }
-
 }
