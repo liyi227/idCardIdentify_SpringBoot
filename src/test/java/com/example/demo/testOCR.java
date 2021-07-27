@@ -36,12 +36,10 @@ public class testOCR {
         // 加载动态库
         URL url = ClassLoader.getSystemResource("lib/opencv/opencv_java452.dll");
         System.load(url.getPath());
-
         //原图路径
         String sourceImage = "E:\\Desktop\\OCRTest\\image\\01.png";
         //处理后的图片保存路径
         String processedImage = sourceImage.substring(0, sourceImage.lastIndexOf(".")) + "after.png";
-
         //读取图像
         Mat image = imread(sourceImage);
         if (image.empty()) {
@@ -49,11 +47,8 @@ public class testOCR {
         }
 //        imshow("Original Image", image);
 
-
-
-        //倾斜校正并标准化
+        //倾斜校正
         Mat correctedImg = ImageOpencvUtil.imgCorrection(image);
-
         imshow("Zoomed Image", correctedImg);
 
         Mat img = correctedImg.clone();
@@ -63,9 +58,14 @@ public class testOCR {
         int brightness = ImageFilterUtil.imageBrightness(bufferedImage);
         System.out.println("brightness = " + brightness);
         BufferedImage brightnessImg = bufferedImage;
-        //如果亮度>180，则亮度减少60
-        if (brightness > 180)
+        if (brightness > 180) {
             brightnessImg = ImageFilterUtil.imageBrightness(bufferedImage, -60);
+        }
+
+        //涂白
+//        BufferedImage paintWhiteImg = ImageFilterUtil.imageRGBDifferenceFilter(bufferedImage, targetDifferenceValue);
+        //黑白化
+//        BufferedImage blackWhiteImage = ImageFilterUtil.replaceWithWhiteColor(paintWhiteImg);
 
         //ImageFilterUtil灰度化
         BufferedImage grayImage = ImageFilterUtil.gray(brightnessImg);
@@ -74,11 +74,9 @@ public class testOCR {
 
         //opencv非局部均值去噪（需要三通道的Mat图像）
         Mat denoiseImg = ImageOpencvUtil.pyrMeanShiftFiltering(matImg);
-//        grayImg = ImageOpencvUtil.pyrMeanShiftFiltering(grayImg);
 
         //opencv灰度化--转为单通道
         Mat grayImg = ImageOpencvUtil.gray(denoiseImg);
-
         imshow("grayImg", grayImg);
 
         //膨胀与腐蚀后的Mat图像
@@ -87,7 +85,7 @@ public class testOCR {
 
         //查找和筛选文字区域
         List<RotatedRect> rects = ImageOpencvUtil.findTextRegionRect(dilationImg);
-        if (rects.size() > 6)
+        if (rects.size() > 10)
             System.out.println("身份证信息文本框获取错误！！！");
 
         //用红线画出找到的轮廓
@@ -119,7 +117,6 @@ public class testOCR {
             lstBufferedImg.add(tempBufferedImg);
         }
 
-
         ITesseract instance = new Tesseract();    //创建ITesseract接口的实现实例对象
 
         //java.lang.ClassLoader.getSystemResource()方法返回一个URL对象读取资源，如果资源不能被找到则返回null。
@@ -128,7 +125,6 @@ public class testOCR {
         instance.setDatapath(path); //path为tessdata文件夹目录位置
         instance.setLanguage("chi_sim");    //中英文混合识别需用 + 分隔，chi_sim：简体中文，eng：英文
         instance.setTessVariable("user_defined_dpi", "300");    //Warning: Invalid resolution 0 dpi. Using 70 instead.
-        String result = null;
 
         System.out.println("识别结果如下：");
         try {
@@ -151,7 +147,9 @@ public class testOCR {
 
             String nation = "";
             instance.setLanguage("chi_sim");
-            nation = instance.doOCR(lstBufferedImg.get(1)).trim();
+            nation = instance.doOCR(lstBufferedImg.get(2)).trim();
+            if (nation.equals("汊")||(nation.equals("池"))||nation.contains("汉"))
+                nation = "汉";
             System.out.println("名族：" + nation);
 
             int year = Integer.parseInt(idNumber.substring(6, 10));
@@ -161,13 +159,16 @@ public class testOCR {
 
             String address = "";
             instance.setLanguage("chi_sim");    //中英文混合识别需用 + 分隔，chi_sim：简体中文，eng：英文
-            for (int i = 2; i < lstBufferedImg.size() - 1; i++) {
+//            for (int i = 6; i < lstBufferedImg.size() - 1; i++) {
+            for (int i = lstBufferedImg.size() - 3; i < lstBufferedImg.size() - 1; i++) {
                 address += instance.doOCR(lstBufferedImg.get(i)).trim();
+                //            replaceAll("[^\\s\\u4e00-\\u9fa5\\-0-9]+", "").replaceAll("\\n", "").trim()
             }
             address = address.replaceAll("[^\\s\\u4e00-\\u9fa5\\-0-9]+", "").replaceAll(" +", "").trim();
-//            address = address.replaceAll(" ", "");
             System.out.println("地址：" + address);
 
+//            String idNumber = "";
+//            idNumber = instance.doOCR(lstBufferedImg.get(lstBufferedImg.size() - 1)).replaceAll("[^0-9xX]", "");
             System.out.println("身份证号：" + idNumber);
 
             long endTime = System.currentTimeMillis();    //识别结束的时间

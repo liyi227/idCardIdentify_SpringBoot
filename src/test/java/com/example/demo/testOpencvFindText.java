@@ -13,6 +13,7 @@ import java.util.List;
 import static org.opencv.highgui.HighGui.imshow;
 import static org.opencv.highgui.HighGui.waitKey;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
+import static org.opencv.imgcodecs.Imgcodecs.imwrite;
 
 /**
  * @author ly
@@ -27,9 +28,9 @@ public class testOpencvFindText {
         System.load(url.getPath());
 
         //原图路径
-        String sourceImage = "E:\\Desktop\\OCRTest\\image\\01.png";
+        String sourceImage = "E:\\Desktop\\OCRTest\\image\\14.png";
         //处理后的图片保存路径
-        String processedImage = sourceImage.substring(0, sourceImage.lastIndexOf(".")) + "after.png";
+        String processedImage = sourceImage.substring(0, sourceImage.lastIndexOf(".")) + "afterDetection.png";
 
         //读取图像
         Mat image = imread(sourceImage);
@@ -40,15 +41,9 @@ public class testOpencvFindText {
 
         //倾斜校正
         Mat correctedImg = ImageOpencvUtil.imgCorrection(image);
+        imshow("倾斜校正并标准化", correctedImg);
 
-        //倾斜校正后裁剪
-        Mat cuttedImg = ImageOpencvUtil.cutRect(correctedImg);
-        //裁剪后缩放标准化
-        Mat zoomedImg = ImageOpencvUtil.zoom(cuttedImg);
-
-        imshow("Zoomed Image", zoomedImg);
-
-        Mat img = zoomedImg.clone();
+        Mat img = correctedImg.clone();
         BufferedImage bufferedImage = ImageConvertUtil.Mat2BufImg(img, ".png");
 
         //ImageFilterUtil调节亮度
@@ -60,7 +55,7 @@ public class testOpencvFindText {
         }
 
         //涂白
-//        BufferedImage paintWhiteImg = ImageFilterUtil.imageRGBDifferenceFilter(bufferedImage, targetDifferenceValue);
+//        BufferedImage paintWhiteImg = ImageFilterUtil.imageRGBDifferenceFilter(brightnessImg, targetDifferenceValue);
         //黑白化
 //        BufferedImage blackWhiteImage = ImageFilterUtil.replaceWithWhiteColor(paintWhiteImg);
 
@@ -68,19 +63,23 @@ public class testOpencvFindText {
         BufferedImage grayImage = ImageFilterUtil.gray(brightnessImg);
         //将ImageFilterUtil灰度化后的图片转换为Mat矩阵图像
         Mat matImg = ImageConvertUtil.BufImg2Mat(grayImage);
+        imshow("灰度化", matImg);
 
         //opencv非局部均值去噪（需要三通道的Mat图像）
         Mat denoiseImg = ImageOpencvUtil.pyrMeanShiftFiltering(matImg);
-//        grayImg = ImageOpencvUtil.pyrMeanShiftFiltering(grayImg);
+        imshow("去噪", denoiseImg);
 
-        //opencv灰度化--转为单通道
+        //opencv灰度化--作用：转为单通道
         Mat grayImg = ImageOpencvUtil.gray(denoiseImg);
-
 //        imshow("grayImg", grayImg);
+
+        Mat binaryImg = ImageOpencvUtil.ImgBinarization(grayImg);
+        imshow("二值化", binaryImg);
+        imwrite(processedImage, binaryImg);
 
         //膨胀与腐蚀后的Mat图像
         Mat dilationImg = ImageOpencvUtil.preprocess(grayImg);
-        imshow("dilation", dilationImg);
+        imshow("膨胀与腐蚀", dilationImg);
 
         //查找和筛选文字区域
         List<RotatedRect> rects = ImageOpencvUtil.findTextRegionRect(dilationImg);
@@ -94,15 +93,14 @@ public class testOpencvFindText {
             }
         }
         //显示带轮廓的图像
-        imshow("Contour Image", img);
+        imshow("文本定位", img);
 
         //截取并显示轮廓图片
         Mat dst;
         for (int i = 0; i < rects.size(); i++) {
-//            dst = new Mat(img, rects.get(i).boundingRect());
-            dst =ImageOpencvUtil.cropImage(img,rects.get(i).boundingRect());
+            dst = ImageOpencvUtil.cropImage(img, rects.get(i).boundingRect());
             //显示截取的关键信息图像
-            imshow("croppedImg" + i, dst);
+            imshow("需识别身份证信息" + i, dst);
         }
 
         waitKey();

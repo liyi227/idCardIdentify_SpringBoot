@@ -1,13 +1,17 @@
 package com.example.demo.utils;
 
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.core.RotatedRect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.opencv.highgui.HighGui.imshow;
 import static org.opencv.imgcodecs.Imgcodecs.imread;
 
 /**
@@ -53,7 +57,6 @@ public class ImageProcessUtil {
 
         //opencv灰度化--转为单通道
         Mat grayImg = ImageOpencvUtil.gray(denoiseImg);
-
 //        imshow("grayImg", grayImg);
 
         //膨胀与腐蚀
@@ -62,20 +65,19 @@ public class ImageProcessUtil {
 
         //查找和筛选文字区域
         List<RotatedRect> rects = ImageOpencvUtil.findTextRegionRect(dilationImg);
-        if (rects.size() > 6)
+        if (rects.size() > 10)
             System.out.println("身份证信息文本框获取错误！！！");
 
-//        //用红线画出找到的轮廓
+        //用红线画出找到的轮廓
 //        for (RotatedRect rotatedRect : rects) {
 //            Point[] rectPoint = new Point[4];
 //            rotatedRect.points(rectPoint);
 //            for (int j = 0; j <= 3; j++) {
-//                Imgproc.line(img, rectPoint[j], rectPoint[(j + 1) % 4], new Scalar(0, 0, 255), 2);
+//                Imgproc.line(correctedImg, rectPoint[j], rectPoint[(j + 1) % 4], new Scalar(0, 0, 255), 2);
 //            }
 //        }
-
-//        //显示带轮廓的图像
-//        imshow("Contour Image", img);
+        //显示带轮廓的图像
+//        imshow("Contour Image", correctedImg);
 
         //截取并显示轮廓图片
         Mat dst;
