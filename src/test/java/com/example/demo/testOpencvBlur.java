@@ -26,9 +26,18 @@ public class testOpencvBlur {
         System.load(url.getPath());
 
         //原图路径
-        String sourceImage = "E:\\Desktop\\OCRTest\\image\\04.png";
+        String sourceImage = "E:\\blur\\01.png";
         //去噪后的图片保存路径--在原来的图片主名后加上afterDenoiseOpenCV
-        String processedImage = sourceImage.substring(0, sourceImage.lastIndexOf(".")) + "afterAdaptiveMediaFilter.png";
+        // 均值滤波处理后的图片
+        String blurImage = sourceImage.substring(0, sourceImage.lastIndexOf(".")) + "blur.png";
+        // 中值滤波处理后的图片
+        String medianBlurImage = sourceImage.substring(0, sourceImage.lastIndexOf(".")) + "medianBlur.png";
+        // 高斯滤波处理后的图片
+        String gaussianBlurImage = sourceImage.substring(0, sourceImage.lastIndexOf(".")) + "gaussianBlur.png";
+        // 自适应中值滤波处理后的图片
+        String adaptiveMediaFilterImage = sourceImage.substring(0, sourceImage.lastIndexOf(".")) + "adaptiveMediaFilter.png";
+        // 均值迁移滤波处理后的图片
+        String pyrMeanShiftFilteringImage = sourceImage.substring(0, sourceImage.lastIndexOf(".")) + "pyrMeanShiftFiltering.png";
 
         //读取图像
         File image = new File(sourceImage);
@@ -43,21 +52,26 @@ public class testOpencvBlur {
 
         //调用ImageOpencvUtil的去噪方法
         //均值滤波
-//        Mat denoiseImg = ImageOpencvUtil.blur(graImg);
-        //高斯滤波
-//        Mat denoiseImg = ImageOpencvUtil.gaussianBlur(graImg);
+        Mat blurImg = ImageOpencvUtil.blur(grayImg);
         //中值滤波
-//        Mat denoiseImg = ImageOpencvUtil.medianBlur(graImg);
+        Mat medianBlurImg = ImageOpencvUtil.medianBlur(grayImg);
+        //高斯滤波
+        Mat gaussianBlurImg = ImageOpencvUtil.gaussianBlur(grayImg);
         //自适应中值滤波
-//        Mat denoiseImg= ImageOpencvUtil.adaptiveMediaFilter(graImg, 3, 7);
+        Mat adaptiveMediaFilterImg= ImageOpencvUtil.adaptiveMediaFilter(grayImg, 3, 7);
         //均值迁移滤波
-        Mat denoiseImg = ImageOpencvUtil.pyrMeanShiftFiltering(grayImg);
+        Mat pyrMeanShiftFilteringImg = ImageOpencvUtil.pyrMeanShiftFiltering(grayImg);
 
         //展示去噪处理后图像
-        imshow("Processed Image", denoiseImg);
+//        imshow("Processed Image", pyrMeanShiftFilteringImg);
 
         //保存到字符串processedImage对应位置
-        imwrite(processedImage, denoiseImg);
+        imwrite(blurImage, blurImg);
+        imwrite(medianBlurImage, medianBlurImg);
+        imwrite(gaussianBlurImage, gaussianBlurImg);
+        imwrite(adaptiveMediaFilterImage, adaptiveMediaFilterImg);
+        imwrite(pyrMeanShiftFilteringImage, pyrMeanShiftFilteringImg);
+
         waitKey();
     }
 }

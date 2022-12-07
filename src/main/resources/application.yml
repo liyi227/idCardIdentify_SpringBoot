@@ -1,24 +1,25 @@
 spring:
   #配置数据库，数据库名为ocrdb
   datasource:
-    url: jdbc:mysql://localhost:3306/ocrdb
+    url: jdbc:mysql://101.201.76.87:3306/ocrdb
+    #    url: jdbc:mysql://localhost:3306/ocrdb
     type: com.alibaba.druid.pool.DruidDataSource
     username: root
-    password: liyi0123
+    password: wsadaly123
     driver-class-name: com.mysql.cj.jdbc.Driver
-#  jpa:
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
+  #  jpa:
+  #    show-sql: true
+  #    properties:
+  #      hibernate:
+  #        format_sql: true
 
   http:
     multipart:
       enabled: true
 
-mybatis:
-  type-aliases-package: com.example.demo.entity
-  mapper-locations: classpath:com/example/demo/mapper/*.xml
+  mybatis:
+    type-aliases-package: com.example.demo.entity
+    mapper-locations: classpath:com/example/demo/mapper/*.xml
 
-server:
-  port: 8081
+  server:
+    port: 8800

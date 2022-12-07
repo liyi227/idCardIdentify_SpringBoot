@@ -25,7 +25,7 @@ public class ImageProcessUtil {
         List<BufferedImage> lstBufferedImg = new ArrayList<>();
 
         // 加载动态库
-        URL url = ClassLoader.getSystemResource("lib/opencv/opencv_java452.dll");
+        URL url = ClassLoader.getSystemResource("lib/opencv/opencv_java452.so");   //dll为Windows，so为Linux
         System.load(url.getPath());
 
         //将bufferedImage转换为Mat矩阵图像

@@ -70,11 +70,11 @@ http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <version>4.5.4</version>
         </dependency>
         <!-- slf4j-nop -->
-<!--        <dependency>-->
-<!--            <groupId>org.slf4j</groupId>-->
-<!--            <artifactId>slf4j-nop</artifactId>-->
-<!--            <version>1.7.30</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.slf4j</groupId>-->
+        <!--            <artifactId>slf4j-nop</artifactId>-->
+        <!--            <version>1.7.30</version>-->
+        <!--        </dependency>-->
 
 
         <dependency>
@@ -107,12 +107,29 @@ http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
             <version>2.1.4</version>
         </dependency>
 
+        <!--        <dependency>-->
+        <!--            <groupId>org</groupId>-->
+        <!--            <artifactId>opencv</artifactId>-->
+        <!--            <version>4.5.2</version>-->
+        <!--            <scope>system</scope>-->
+        <!--            <systemPath>${project.basedir}\src\main\resources\lib\opencv\opencv-452.jar</systemPath>-->
+        <!--        </dependency>-->
+
 
     </dependencies>
 
     <build>
         <plugins>
-
+            <!-- 使用maven打包 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.6.7</version>
+                <configuration>
+                    <!--                    <skip>true</skip>-->
+                    <executable>true</executable>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

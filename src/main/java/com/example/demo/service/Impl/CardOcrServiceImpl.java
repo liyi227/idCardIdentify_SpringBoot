@@ -4,11 +4,10 @@ import com.example.demo.entity.IDCard;
 import com.example.demo.service.ICardOcrService;
 import com.example.demo.utils.IDCardOcrUtil;
 import com.example.demo.utils.ImageProcessUtil;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
-
-import java.io.IOException;
 
 import java.util.List;
 
@@ -16,8 +15,10 @@ import java.util.List;
  * @author ly
  * @since 2021/5/8
  */
-@Service()
+@Service("iCardOcrService")
+@ComponentScan
 public class CardOcrServiceImpl implements ICardOcrService {
+
     @Override
     public IDCard cardOcr(BufferedImage bufferedImage) {
 

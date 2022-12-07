@@ -21,12 +21,11 @@ import java.util.Map;
  * @author ly
  * @since 2021/5/8
  */
+@CrossOrigin
 @RestController()
 @RequestMapping("/ocr")
 public class CardOcrController {
 
-
-    @CrossOrigin
     @RequestMapping("/test")
     public JSONObject getByJSON(@RequestBody JSONObject jsonParam) {
         System.out.println("test Print");
@@ -44,13 +43,12 @@ public class CardOcrController {
         return result;
     }
 
-
     @Autowired
     private ICardOcrService iCardOcrService;
 
     @CrossOrigin
+//    @ResponseBody
     @RequestMapping(value = "/idCardOcr", produces = "application/json;charset=utf-8")
-    @ResponseBody
     public IDCard idCardOcr(@RequestParam("file") MultipartFile file) {
         long startTime = System.currentTimeMillis();
         BufferedImage bufferedImage = null;
